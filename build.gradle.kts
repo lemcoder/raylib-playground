@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.kotlinxSerialization)
 }
 
 group = "me.user"
 version = "1.0-SNAPSHOT"
+
+val s: String = File.separator
 
 repositories {
     mavenCentral()
@@ -29,11 +30,13 @@ kotlin {
                 entryPoint = "main"
             }
         }
-    }
 
-    sourceSets {
-        nativeMain.dependencies {
-            implementation(libs.kotlinxSerializationJson)
+        val main by compilations.getting
+
+        main.cinterops.create("raylib") {
+            definitionFile = File(rootDir, "native${s}libraylib.def")
+            includeDirs.headerFilterOnly("$rootDir${s}native${s}include")
+            extraOpts("-libraryPath", "$rootDir${s}native${s}lib${s}${nativeTarget.konanTarget.name}")
         }
     }
 }

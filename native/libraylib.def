@@ -1,0 +1,5 @@
+package = raylib
+headerFilter = "*"
+headers = raylib.h raymath.h rlgl.h
+staticLibraries = libraylib.a
+linkerOpts.mingw_x64 = -lopengl32 -lgdi32 -lwinmm
